@@ -42,10 +42,10 @@ const Menu = ({ menus }) => {
       </Head>
 
       <div className="mx-6">
-        <div className='flex p-6  space-x-5 justify-center border-b-2'>
+        <div className='flex p-6 space-x-5 justify-center border-b-2'>
           <h1 className='font-bold text-3xl'>Menu</h1>
         </div>
-        <div className="flex-grow my-10">
+        <div className="flex-grow my-10 flex justify-center items-center">
           <div className='grid lg:grid-cols-3 gap-3 sm:grid-cols-1 md:grid-cols-2'>
               {menus.map(menu => (
                 <Link href={'/menu/'}>
