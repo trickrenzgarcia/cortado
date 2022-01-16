@@ -5,34 +5,19 @@ import Head from 'next/head'
 import { db } from '../../firebase/clientApp'
 import { collection, onSnapshot, getDocs } from 'firebase/firestore'
 
-export const getStaticProps = async () => {
-  let menus = []
+const Menu = () => {
+  const [menus, setMenus] = useState([])
 
-  try {
+  useEffect(() => {
     onSnapshot(collection(db, "menu"), (snapshot) => {
-      snapshot.docs.map((doc) => {
-        let data = doc.data()
-        menus.push({
-          name: data.name,
-          description: data.description
-        })
-      })
+      setMenus(snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data()
+      })))
     })
-    console.log(menus)
-  }
-  catch(error){
-    console.log(error)
-  }
-
-  return {
-    props: { menus }
-  }
-
-}
-
-const Menu = ({ menus }) => {
-
+  }, [])
   
+
   return (
     <>
       <Head>
@@ -48,13 +33,12 @@ const Menu = ({ menus }) => {
         <div className="flex-grow my-10 flex justify-center items-center">
           <div className='grid lg:grid-cols-3 gap-3 sm:grid-cols-1 md:grid-cols-2'>
               {menus.map(menu => (
-                <Link href={'/menu/'}>
-                  <a className=''>
-                    <Drink name={menu.name} description={menu.description}/>
+                <Link href={'/menu/' + menu.id}>
+                  <a>
+                    <Drink name={menu.name} description={menu.description} />
                   </a>
                 </Link>
               ))}
-              <Drink name={"awdawd"} description={"menu.description"}/>
           </div>
         </div>
       </div>
