@@ -1,12 +1,13 @@
 import React from 'react'
 import Image from 'next/image'
 
-const Drink = ({ name, description}) => {
+const Drink = ({ name, description, imageUrl}) => {
   return (
       <div className="hover:opacity-90 flex flex-row justify-center my-4">
         <div className="bg-gray-200 rounded-xl relative">
-          <Image className= "object-cover rounded-xl" src="/Cortadito.png" 
+          <Image className= "object-cover rounded-xl" 
             alt=""
+            src={imageUrl || "https://i.imgur.com/1h0mREd.png"}
             width={500}
             height={460}
           />

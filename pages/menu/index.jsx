@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Drink from '../../components/menu/Drink'
+import Image from 'next/image'
 import Link from 'next/link'
 import Head from 'next/head'
 import { db } from '../../firebase/clientApp'
@@ -35,7 +36,7 @@ const Menu = () => {
               {menus.map(menu => (
                 <Link href={'/menu/' + menu.id}>
                   <a>
-                    <Drink name={menu.name} description={menu.description} />
+                    <Drink name={menu.name} description={menu.description} imageUrl={menu.imageUrl}/>
                   </a>
                 </Link>
               ))}
