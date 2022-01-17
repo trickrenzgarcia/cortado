@@ -5,19 +5,20 @@ import Link from 'next/link'
 import Head from 'next/head'
 import { db } from '../../firebase/clientApp'
 import { collection, onSnapshot, getDocs } from 'firebase/firestore'
+import absoluteUrl from 'next-absolute-url'
 
-const Menu = () => {
-  const [menus, setMenus] = useState([])
+export const getStaticProps = async () => {
+  const { URL } = process.env
 
-  useEffect(() => {
-    onSnapshot(collection(db, "menu"), (snapshot) => {
-      setMenus(snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data()
-      })))
-    })
-  }, [])
-  
+  const res = await fetch(URL + '/api/menu')
+  const menus = await res.json()
+
+  return {
+    props: { menus }
+  }
+}
+
+const Menu = ({ menus }) => {
 
   return (
     <>
@@ -34,7 +35,7 @@ const Menu = () => {
         <div className="flex-grow my-10 flex justify-center items-center">
           <div className='grid lg:grid-cols-3 gap-3 sm:grid-cols-1 md:grid-cols-2'>
               {menus.map(menu => (
-                <Link href={'/menu/' + menu.id}>
+                <Link href={'/menu/' + menu.ids}>
                   <a>
                     <Drink name={menu.name} description={menu.description} imageUrl={menu.imageUrl}/>
                   </a>

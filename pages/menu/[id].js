@@ -1,19 +1,13 @@
-import { collection, query, doc, getDoc, onSnapshot } from 'firebase/firestore'
-import { db } from '../../firebase/clientApp'
-
 
 export const getStaticPaths = async () => {
-  let menus = []
+  const { URL } = process.env
 
-  onSnapshot(collection(db, "menu"), (snapshot) => {
-    menus.push(snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data()
-    })))
-  })
+  const res = await fetch(URL + "/api/menu")
+
+  const menus = await res.json()
 
   const paths = menus.map((menu) => ({
-    params: { id: menu.id},
+    params: { id: menu.ids},
   }))
   
   return {
@@ -25,12 +19,14 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async (context) => {
   const id = context.params.id;
+  const { URL } = process.env
 
-  const docRef = doc(db, "menu", id)
-  const docSnap = await getDoc(docRef)
+  const res = await fetch(URL + '/api/menu/' + id)
+
+  const menu = await res.json()
 
   return {
-    props: { item: docSnap.data() }
+    props: { item: menu }
   }
 }
 

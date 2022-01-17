@@ -6,12 +6,15 @@ export default async (req, res) => {
     const { id } = req.body
     const menu = query(collection(db, "menu"))
     const menuSnapshot = await getDocs(menu)
-    const menuData = menuSnapshot.docs.map(doc => doc.data())
+    const menuData = menuSnapshot.docs.map((doc) => ({
+      ids: doc.id,
+      ...doc.data()
+    }))
 
-    if(menuData.some(menu => menu.id === id)){
-      res.status(200).json(menuData)
-    } else {
+    if(menuData.some(menu => menu.ids === id)){
       
+    } else {
+      res.status(200).json(menuData)
     }
   } catch (error) {
     console.log(error)
